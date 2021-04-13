@@ -26,10 +26,20 @@ public class ArraysAndStrings{
 			input2 = reader.nextLine();
 			result = Boolean.toString(isPermutation(input,input2));*/
 			
-			System.out.println("Determines whether your string can be permuted into a palindrome");
+			/*System.out.println("Determines whether your string can be permuted into a palindrome");
 			input = reader.nextLine();
-			result = Boolean.toString(palindromePermutation(input));
-		
+			result = Boolean.toString(palindromePermutation(input));*/
+			
+			System.out.println("Determines whether your first string can be modified into your second via a single insertion, deletion or replacement.");
+			input = reader.nextLine();
+			input2 = reader.nextLine();
+			result = Boolean.toString(isOneEditAway(input,input2));
+			
+			/*System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
+			 input = reader.nextLine();
+			 result = stringCompression(input);
+			 */
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			return;
@@ -55,7 +65,8 @@ public class ArraysAndStrings{
 			usedChars[arrIndex] |= mask;
 		}
 		return true;
-		/* Optimal code also used bit vectors, but assumed only 'A' -> 'z'. Runtime O(n) */
+		/* Used bit vectors just like the optimal code approach, however, they assumed only 'A' -> 'z' - while
+		 * mine appears a bit more complex since I assumed the entirety of ASCII. Runtime O(n) */
 	}
 	
 	/* Determine if one string is a permutation of another. Assumes ASCII, and case sensitivity.*/
@@ -111,5 +122,61 @@ public class ArraysAndStrings{
 		 * */
 	}
 	
+	/* Determine if you can edit String 'orig' with a single insertion, removal, or replacement, to end up with String 'edited' */
+	private static boolean isOneEditAway(String orig, String edited) throws Exception {
+		h.isAscii(orig);
+		h.isAscii(edited);	
+		int strSizeDiff = orig.length() - edited.length();
+		
+		if(strSizeDiff < -1 || strSizeDiff > 1) { 
+			return false; //cannot have a length discrepancy of 2+ without 2+ insertions
+		}else if(strSizeDiff == -1) { 
+			return isOneEditAwayHelper(edited, orig); //edited is bigger, there may be an insertion
+		}else if(strSizeDiff == 1) { 
+			return isOneEditAwayHelper(orig, edited); //orig is bigger, there may be a deletion
+		}
+		
+		//strings are same length, there may be a replacement 
+		boolean editFound = false;
+		for(int i = 0; i < orig.length(); i++) {
+			if(orig.charAt(i) != edited.charAt(i)) {
+				if(editFound) { 
+					return false; //this would be the second discrepancy
+				}else {
+					editFound = true;
+				}
+			}
+		}
+		return true;
+		/* Runtime of my algorithm is O(n), as it only traverses the string once, regardless of case.
+		 * My solution was very similar to the first proposed ideal solution, and both had equal runtimes, just 
+		 * different methods of structuring.
+		 * */
+	}
+	
+	//helper method: used in case of two unequal sized arrays - implies insertion or removal
+	private static boolean isOneEditAwayHelper(String big, String small) {
+		boolean shiftFound = false;
+		
+		for(int smallIndex = 0, bigIndex = 0; smallIndex < small.length(); smallIndex++, bigIndex++) {
+			if(small.charAt(smallIndex) != big.charAt(bigIndex)) {
+				if(shiftFound) {
+					return false; //can't be two discrepancies
+				}
+				if(small.charAt(smallIndex) != big.charAt(bigIndex+1)) {
+					return false; //couldn't have been a single insertion
+				}else {
+					bigIndex++; //make this new permanent index going forward
+					shiftFound = true;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/* Returns a more or equally compact version of the string, by marking consecutive letter reoccurrences with numbers. */
+	private static String stringCompression(String str) {
+		return "";
+	}
 
 }
