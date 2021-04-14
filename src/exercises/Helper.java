@@ -1,6 +1,7 @@
 package exercises;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Helper{
 
@@ -70,5 +71,24 @@ public class Helper{
 	
 	public static void printArray(String[] arr) {
 		System.out.println(Arrays.toString(arr));
+	}
+
+	public int[][] twodmatrixIntInput() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the number of rows.");
+	       int rows=sc.nextInt();
+	       System.out.println("Enter the number of columns.");
+	       int columns=sc.nextInt();
+	       
+	       System.out.println("Enter array elements (integers):");    
+	       int arr[][]=new int[rows][columns];	        
+	          
+	        for(int i=0; i<rows;i++){            
+	            for(int j=0; j<columns;j++){
+	            	System.out.print("[" + Integer.toString(rows) + ", " + Integer.toString(columns) + "]");
+	                arr[i][j]=sc.nextInt();
+	            }
+	         }
+		return arr;
 	}
 }

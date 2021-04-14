@@ -30,15 +30,20 @@ public class ArraysAndStrings{
 			input = reader.nextLine();
 			result = Boolean.toString(palindromePermutation(input));*/
 			
-			System.out.println("Determines whether your first string can be modified into your second via a single insertion, deletion or replacement.");
+			/*System.out.println("Determines whether your first string can be modified into your second via a single insertion, deletion or replacement.");
 			input = reader.nextLine();
 			input2 = reader.nextLine();
-			result = Boolean.toString(isOneEditAway(input,input2));
+			result = Boolean.toString(isOneEditAway(input,input2));*/
 			
-			/*System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
+			System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
 			 input = reader.nextLine();
 			 result = stringCompression(input);
-			 */
+			 
+			 /*System.out.println("Rotates a two dimensional matrix 90 degrees.");
+			 int[][] specialInput = h.twodmatrixIntInput();
+			 result = (quarterTurnMatrix(specialInput));*/
+			 
+			 
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -175,8 +180,34 @@ public class ArraysAndStrings{
 	}
 	
 	/* Returns a more or equally compact version of the string, by marking consecutive letter reoccurrences with numbers. */
-	private static String stringCompression(String str) {
-		return "";
+	private static String stringCompression(String str) throws Exception {
+		h.isAscii(str);
+		StringBuilder newStr = new StringBuilder();
+		char currChar, nextChar; 
+		currChar = nextChar = '\0';
+		int repLength = 1;
+		
+		for(int i = 0; i < str.length() - 1; i++) {
+			currChar = str.charAt(i);
+			nextChar = str.charAt(i+1);
+			if(currChar == nextChar) {
+				repLength++; //will go from 1 -> 2 if this is the start of a new chain
+			}else if(repLength > 1) {
+				//characters are NOT equal, but repetition longer than one was recorded. add the compressed string
+				newStr.append(currChar + Integer.toString(repLength));
+				repLength = 1;
+			}else {
+				newStr.append(currChar); //no repetition has been detected, so we just append as normal, as "a1" is longer than "a"
+			}
+		}
+		
+		//accounting for last character
+		if(repLength > 1) {
+			return newStr.append(nextChar + Integer.toString(repLength)).toString();
+		}
+		return newStr.append(nextChar).toString();
+		/*Runtime is O(n) since it only traverses the string once and uses StringBuilders. Approach was basically the same as optimal
+		 * solution, however my code is a bit longer than necessary, and also a further optimization can be made by premeditating the
+		 * size of the StringBuilder to prevent it from doubling its capacity right before the final addition.*/
 	}
-
 }
