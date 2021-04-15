@@ -1,7 +1,6 @@
 package exercises;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Scanner;
 import util.Helper;
 
 public class ArraysAndStrings{
@@ -10,49 +9,65 @@ public class ArraysAndStrings{
 	private static Helper h = new Helper();
 	
 	public static void RunTests() {
-		Scanner reader = new Scanner(System.in);
 		String result= "NULL";
 		String input = "";
 		String input2 = "";
 		
 		try {
 			
-			/* Test methods => Only have one method uncommented at a time. */
+			System.out.println("Run which code?\n(1)All Characters Unique\n(2)String Permutation\n(3)Palindrome Permutation\n(4)One Edit Away\n" +
+			"(5)String Compression\n(6)Quarter Turn Matrix\n(7)Zero Cross Matrix\n(8)String Rotation");
+			int functionNo = Main.reader.nextInt();
+			Main.reader.nextLine(); //consume \n
 			
-			/*System.out.println("Determines if all characters in string are unique (Input: 1 string)");
-			/input = reader.nextLine();	
-			/result = Boolean.toString(allCharactersUnique(input));*/
-			
-			/*System.out.println("Determines whether one string is a permutation of another (Input: 2 strings)");
-			input = reader.nextLine();
-			input2 = reader.nextLine();
-			result = Boolean.toString(isPermutation(input,input2));*/
-			
-			/*System.out.println("Determines whether your string can be permuted into a palindrome");
-			input = reader.nextLine();
-			result = Boolean.toString(palindromePermutation(input));*/
-			
-			/*System.out.println("Determines whether your first string can be modified into your second via a single insertion, deletion or replacement.");
-			input = reader.nextLine();
-			input2 = reader.nextLine();
-			result = Boolean.toString(isOneEditAway(input,input2));*/
-			
-			/*System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
-			 input = reader.nextLine();
-			 result = stringCompression(input);*/
-			 
-			 /*System.out.println("Rotates a two dimensional NxN matrix 90 degrees (using an in-place algorithm).");
-			 int[][] specialInput = h.twodMatrixIntInput(true);
-			 result = (quarterTurnMatrix(specialInput));*/
-			
-			System.out.println("For any MxN matrix, generates a matrix where a single element being set to 0 results in all elements directly horizontal or vertical being set to 0 as well.");		 
-			int[][] specialInput = h.twodMatrixIntInput();
-			result = zeroCrossMatrix(specialInput);
-			
-			/*System.out.println("Determines if one string is a rotation of another string (for example, \"eckersch\" is a rotation of \"checkers\", but \"cehckers\" is not).");
-			input = reader.nextLine();
-			input2 = reader.nextLine();
-			result = Boolean.toString(isStringRotation(input,input2));*/
+			switch(functionNo) {
+				case(1):
+					System.out.println("Determines if all characters in string are unique (Input: 1 string)");
+					input = Main.reader.nextLine();
+					result = Boolean.toString(allCharactersUnique(input));
+					break;
+				case(2):
+					System.out.println("Determines whether one string is a permutation of another (Input: 2 strings)");
+					input = Main.reader.nextLine();
+					input2 = Main.reader.nextLine();
+					result = Boolean.toString(isPermutation(input,input2));
+					break;
+				case(3):
+					System.out.println("Determines whether your string can be permuted into a palindrome");
+					input = Main.reader.nextLine();
+					result = Boolean.toString(palindromePermutation(input));
+					break;
+				case(4):
+					System.out.println("Determines whether your first string can be modified into your second via a single insertion, deletion or replacement.");
+					input = Main.reader.nextLine();
+					input2 = Main.reader.nextLine();
+					result = Boolean.toString(isOneEditAway(input,input2));
+					break;
+				case(5):
+					System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
+					input = Main.reader.nextLine();
+					result = stringCompression(input);
+					break;
+				case(6):
+					System.out.println("Rotates a two dimensional NxN matrix 90 degrees (using an in-place algorithm).");
+					int[][] matrix = h.twodMatrixIntInput(true);
+					result = (quarterTurnMatrix(matrix));
+					break;
+				case(7):
+					System.out.println("For any MxN matrix, generates a matrix where a single element being set to 0 results in the corresponding row and column's entries to be set to 0 as well. Limit 64x64 in dimensions.");		 
+					int[][] matrix2 = h.twodMatrixIntInput();
+					result = zeroCrossMatrix(matrix2);
+					break;
+				case(8):
+					System.out.println("Determines if one string is a rotation of another string (for example, \"eckersch\" is a rotation of \"checkers\", but \"cehckers\" is not).");
+					input = Main.reader.nextLine();
+					input2 = Main.reader.nextLine();
+					result = Boolean.toString(isStringRotation(input,input2));
+					break;
+				default:
+					System.out.println("Unrecognized command.");
+					return;
+			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -220,7 +235,7 @@ public class ArraysAndStrings{
 		 * size of the StringBuilder to prevent it from doubling its capacity right before the final addition.*/
 	}
 	
-	/*Returns a N-by-N matrix rotated clockwise 90-degrees. THIS ALGORITHM IS REQUIRED TO BE IN-PLACE. Returns it in string form.*/
+	/* Returns a N-by-N matrix rotated clockwise 90-degrees. THIS ALGORITHM IS REQUIRED TO BE IN-PLACE. Returns it in string form.*/
 	private static String quarterTurnMatrix(int[][] matrix) throws Exception {
 		/*Transposing the matrix will almost put everything in the right place, columns just need to be mirrored over the center column.*/
 		if(matrix.length != matrix[0].length) {
@@ -258,18 +273,74 @@ public class ArraysAndStrings{
 		return matrix;
 	}
 	
-	private static String zeroCrossMatrix(int[][] input) {
-		// TODO Auto-generated method stub
-		return null;
+	/* Returns an M-by-N matrix whereby each row or column containing a zero is entirely set to 0. Limited capacity 64x64. */
+	private static String zeroCrossMatrix(int[][] matrix) throws Exception {
+
+		int m = matrix.length;
+		int n = matrix[0].length;
+		if(m > 64 || n > 64) {
+			/* We could create an array of longs to lift this restriction, but it adds a bunch of overhead that makes the code difficult to
+			 * read and to test. For simplicity's sake, I will assume 64x64 is the largest possible array to be passed in.*/
+			throw new Exception("Matrix must be bounded to 64 values on any given axis.");
+		}
+		
+		/*using bit vectors again, like in allCharactersUnique*/
+		long rowsToZeroify = 0;
+		long colsToZeroify = 0;
+		
+		for(int row = 0; row < m; row++) {
+			for(int col = 0; col < n; col++) {
+				if(matrix[row][col] == 0) {
+					long rowMask = 1 << row;
+					rowsToZeroify |= rowMask;
+					long colMask = 1 << col;
+					colsToZeroify |= colMask;
+				}
+			}
+		}
+		
+		for(int rowIndex = 0; rowIndex < m; rowIndex++) {
+			if(((rowsToZeroify >> rowIndex) & 1) == 1) { //if row contains a 0...
+				matrix = zeroCrossMatrixSetZeros(matrix, rowIndex, true);
+			}
+		}
+		
+		for(int colIndex = 0; colIndex < n; colIndex++) {
+			if(((colsToZeroify >> colIndex) & 1) == 1) { //if column contains a 0...
+				matrix = zeroCrossMatrixSetZeros(matrix, colIndex, false);
+			}
+		}
+		
+		return h.matrixToString(matrix);
+		
+		/* More or less the same approach as the book's solution. Runtime is O(m*n), and space 
+		 * complexity is O(m+n). The book's initial solution gives O(m*n), but later finds a way
+		 * to utilize the array's first column and row as a sort of memory to reduce space
+		 * complexity to O(1). I strongly prefer my method, however, as the code is far easier to follow,
+		 * and a space complexity of only O(m+n) definitely justifies it. */
 	}
 	
+	private static int[][] zeroCrossMatrixSetZeros(int[][] input, int index, boolean isRow){
+		if(isRow) {
+			for(int i = 0; i < input.length; i++) {
+				input[index][i] = 0;
+			}
+		}else {
+			for(int j = 0; j < input[0].length; j++) {
+				input[j][index] = 0;
+			}
+		}
+		return input;
+	}
+	
+	/* Determines whether a string can be "rotated" and form another string. */
 	private static boolean isStringRotation(String str1, String str2) throws Exception {
 		h.isAscii(str1);
 		h.isAscii(str2);
-		if(str1.length() != str2.length()) return false;
 		
-		// TODO
-		return false;
+		if(str1.length() != str2.length()) return false;
+		str1 += str1; //if it's truly a rotation, str2 will be contained within str1+str1 (ex: llohe|llohe contains "hello")	
+		return str1.contains(str2);
 	}
 	
 }

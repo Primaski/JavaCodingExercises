@@ -1,7 +1,8 @@
 package util;
 
 import java.util.Arrays;
-import java.util.Scanner;
+
+import exercises.Main;
 
 public class Helper{
 
@@ -78,13 +79,12 @@ public class Helper{
 	}
 	
 	public int[][] twodMatrixIntInput(boolean forceRowColumnToBeEqual) throws Exception {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the number of rows.");
-	       int rows = sc.nextInt();
+	       int rows = Main.reader.nextInt();
 	       int columns = rows;
 	       if(!forceRowColumnToBeEqual) {
 	    	   	System.out.println("Enter the number of columns.");
-	       		columns = sc.nextInt();
+	       		columns = Main.reader.nextInt();
 	       }
 	       if(rows < 1 || columns < 1) {
 	    	   throw new Exception("Incorrectly formatted matrix.");
@@ -96,7 +96,7 @@ public class Helper{
 	        for(int i = 0; i < rows; i++){            
 	            for(int j = 0; j < columns; j++){
 	            	System.out.print("[" + Integer.toString(i) + ", " + Integer.toString(j) + "]: ");
-	                arr[i][j] = sc.nextInt();
+	                arr[i][j] = Main.reader.nextInt();
 	            }
 	         }
 	        System.out.println();
