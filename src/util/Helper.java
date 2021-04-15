@@ -1,4 +1,4 @@
-package exercises;
+package util;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -73,22 +73,37 @@ public class Helper{
 		System.out.println(Arrays.toString(arr));
 	}
 
-	public int[][] twodmatrixIntInput() {
-		Scanner sc=new Scanner(System.in);
+	public int[][] twodMatrixIntInput() throws Exception{
+		return twodMatrixIntInput(false);
+	}
+	
+	public int[][] twodMatrixIntInput(boolean forceRowColumnToBeEqual) throws Exception {
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the number of rows.");
-	       int rows=sc.nextInt();
-	       System.out.println("Enter the number of columns.");
-	       int columns=sc.nextInt();
+	       int rows = sc.nextInt();
+	       int columns = rows;
+	       if(!forceRowColumnToBeEqual) {
+	    	   	System.out.println("Enter the number of columns.");
+	       		columns = sc.nextInt();
+	       }
+	       if(rows < 1 || columns < 1) {
+	    	   throw new Exception("Incorrectly formatted matrix.");
+	       }
 	       
 	       System.out.println("Enter array elements (integers):");    
-	       int arr[][]=new int[rows][columns];	        
+	       int arr[][] = new int[rows][columns];	        
 	          
-	        for(int i=0; i<rows;i++){            
-	            for(int j=0; j<columns;j++){
-	            	System.out.print("[" + Integer.toString(rows) + ", " + Integer.toString(columns) + "]");
-	                arr[i][j]=sc.nextInt();
+	        for(int i = 0; i < rows; i++){            
+	            for(int j = 0; j < columns; j++){
+	            	System.out.print("[" + Integer.toString(i) + ", " + Integer.toString(j) + "]: ");
+	                arr[i][j] = sc.nextInt();
 	            }
 	         }
+	        System.out.println();
 		return arr;
+	}
+	
+	public String matrixToString(int[][] matrix){
+		return Arrays.deepToString(matrix).replace("], ", "]\n");
 	}
 }

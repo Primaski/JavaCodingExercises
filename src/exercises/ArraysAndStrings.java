@@ -1,10 +1,12 @@
 package exercises;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Scanner;
+import util.Helper;
 
 public class ArraysAndStrings{
 	
-	int opCount = 0;
+	private int opCount = 0; //add where applicable to count operations
 	private static Helper h = new Helper();
 	
 	public static void RunTests() {
@@ -15,7 +17,7 @@ public class ArraysAndStrings{
 		
 		try {
 			
-			/* Test methods */
+			/* Test methods => Only have one method uncommented at a time. */
 			
 			/*System.out.println("Determines if all characters in string are unique (Input: 1 string)");
 			/input = reader.nextLine();	
@@ -35,15 +37,22 @@ public class ArraysAndStrings{
 			input2 = reader.nextLine();
 			result = Boolean.toString(isOneEditAway(input,input2));*/
 			
-			System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
+			/*System.out.println("Type in a string to be compressed. Consecutive letter reoccurrences will be marked with numbers instead (ex: rrr => r3)");
 			 input = reader.nextLine();
-			 result = stringCompression(input);
+			 result = stringCompression(input);*/
 			 
-			 /*System.out.println("Rotates a two dimensional matrix 90 degrees.");
-			 int[][] specialInput = h.twodmatrixIntInput();
+			 /*System.out.println("Rotates a two dimensional NxN matrix 90 degrees (using an in-place algorithm).");
+			 int[][] specialInput = h.twodMatrixIntInput(true);
 			 result = (quarterTurnMatrix(specialInput));*/
-			 
-			 
+			
+			System.out.println("For any MxN matrix, generates a matrix where a single element being set to 0 results in all elements directly horizontal or vertical being set to 0 as well.");		 
+			int[][] specialInput = h.twodMatrixIntInput();
+			result = zeroCrossMatrix(specialInput);
+			
+			/*System.out.println("Determines if one string is a rotation of another string (for example, \"eckersch\" is a rotation of \"checkers\", but \"cehckers\" is not).");
+			input = reader.nextLine();
+			input2 = reader.nextLine();
+			result = Boolean.toString(isStringRotation(input,input2));*/
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -53,7 +62,7 @@ public class ArraysAndStrings{
 		System.out.println(result);
 		return;
 	}
-	
+
 	/* Determine if all characters are unique. Assumes ASCII, and case sensitivity.*/
 	private static boolean allCharactersUnique(String str) throws Exception {
 		h.isAscii(str);
@@ -206,8 +215,61 @@ public class ArraysAndStrings{
 			return newStr.append(nextChar + Integer.toString(repLength)).toString();
 		}
 		return newStr.append(nextChar).toString();
-		/*Runtime is O(n) since it only traverses the string once and uses StringBuilders. Approach was basically the same as optimal
+		/* Runtime is O(n) since it only traverses the string once and uses StringBuilders. Approach was basically the same as optimal
 		 * solution, however my code is a bit longer than necessary, and also a further optimization can be made by premeditating the
 		 * size of the StringBuilder to prevent it from doubling its capacity right before the final addition.*/
 	}
+	
+	/*Returns a N-by-N matrix rotated clockwise 90-degrees. THIS ALGORITHM IS REQUIRED TO BE IN-PLACE. Returns it in string form.*/
+	private static String quarterTurnMatrix(int[][] matrix) throws Exception {
+		/*Transposing the matrix will almost put everything in the right place, columns just need to be mirrored over the center column.*/
+		if(matrix.length != matrix[0].length) {
+			throw new Exception("Matrix must have same number of rows and columns.");
+		}
+		
+		matrix = transposeMatrix(matrix);
+		
+		for(int row = 0; row < matrix.length; row++) {
+			for(int col = 0; col < matrix[0].length / 2; col++) {
+				int temp = matrix[row][col];
+				matrix[row][col] = matrix[row][matrix[0].length - col - 1];
+				matrix[row][matrix[0].length - col - 1] = temp; 
+			}
+		}
+		
+		return h.matrixToString(matrix);
+		
+		/* The optimal solution used a different method than mine, and while both of our efficiencies were O(n^2), theirs required only one swap function,
+		 * while mine required 2 swap functions. Their methodology involved rotating each of the four corners, and then each adjacent point, working
+		 * inwards. Mine involved a simple transposition and then a column mirroring. While their methodology is more efficient, I would argue mine was
+		 * much easier to follow and read.*/
+	}
+	
+	private static int[][] transposeMatrix(int[][] matrix){
+		for(int row = 0; row < matrix.length; row++) {
+			for(int col = row; col < matrix[0].length; col++) {
+				/*using temporary variables to swap values as to keep space allocation O(1)
+				 *col = row because for each iteration K of the outer loop, we've already swapped the first K values, repeating just undoes the process.*/
+				int temp = matrix[row][col];
+				matrix[row][col] = matrix[col][row];
+				matrix[col][row] = temp;
+			}
+		}
+		return matrix;
+	}
+	
+	private static String zeroCrossMatrix(int[][] input) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private static boolean isStringRotation(String str1, String str2) throws Exception {
+		h.isAscii(str1);
+		h.isAscii(str2);
+		if(str1.length() != str2.length()) return false;
+		
+		// TODO
+		return false;
+	}
+	
 }
