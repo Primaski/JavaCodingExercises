@@ -1,11 +1,14 @@
 package util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import exercises.Main;
 
 public class Helper{
 
+	public Random random = new Random();
+	
 	/* Throws exception if not ASCII. */
 	public boolean isAscii(String str) throws Exception {
 		if(!str.matches("^\\p{ASCII}*$")) {

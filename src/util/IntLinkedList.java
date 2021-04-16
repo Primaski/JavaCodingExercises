@@ -3,25 +3,7 @@ package util;
 public class IntLinkedList {
 	
 	public Node head = null;
-	
-	public String toString() {
-		StringBuilder str = new StringBuilder();
-		if(head == null) return "List contains no nodes.";
-		
-		str.append(head.value + " => ");
-		if(head.next == null) return str.delete(str.length() - 4, str.length()).toString();
-		
-		Node curr = head;
-		while(curr.next != null) {
-			str.append(Integer.toString(curr.next.value) + " => ");
-			curr = curr.next;
-		}
-		return str.delete(str.length() - 4, str.length()).toString();
-	}
-	
-	public void print() {
-		System.out.println(this.toString());
-	}
+	Helper h = new Helper();
 	
 	public void appendNode(int val) {
 		Node newNode = new Node(val);
@@ -69,4 +51,49 @@ public class IntLinkedList {
 		}
 		return;
 	}
+
+	public Node getNodeAtIndex(int index) {
+		if(head == null) return null;
+		Node temp = head;
+		while(index != 0) {
+			index--;
+			temp = temp.next;
+		}
+		return temp;
+	}
+	
+	public void reset() {
+		head = null;
+		return;
+	}
+	
+	public void generateSampleLinkedList(int size) {
+		head = null;
+		int[] nodes = new int[size];
+		for(int i = 0; i < size; i++) {
+			nodes[i] = h.random.nextInt(99);
+		}
+		insertNodes(nodes);
+		return;
+	}
+	
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		if(head == null) return "List contains no nodes.";
+		
+		str.append(head.value + " => ");
+		if(head.next == null) return str.delete(str.length() - 4, str.length()).toString();
+		
+		Node curr = head;
+		while(curr.next != null) {
+			str.append(Integer.toString(curr.next.value) + " => ");
+			curr = curr.next;
+		}
+		return str.delete(str.length() - 4, str.length()).toString();
+	}
+	
+	public void print() {
+		System.out.println(this.toString());
+	}
+	
 }
