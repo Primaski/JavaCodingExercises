@@ -9,14 +9,14 @@ public class IntLinkedList {
 		if(head == null) return "List contains no nodes.";
 		
 		str.append(head.value + " => ");
-		if(head.next == null) return str.toString();
+		if(head.next == null) return str.delete(str.length() - 4, str.length()).toString();
 		
 		Node curr = head;
 		while(curr.next != null) {
 			str.append(Integer.toString(curr.next.value) + " => ");
 			curr = curr.next;
 		}
-		return str.toString();
+		return str.delete(str.length() - 4, str.length()).toString();
 	}
 	
 	public void print() {
