@@ -3,6 +3,7 @@ package util;
 public class IntLinkedList {
 	
 	public Node head = null;
+	
 	Helper h = new Helper();
 	
 	public void appendNode(int val) {
@@ -76,6 +77,16 @@ public class IntLinkedList {
 		int[] nodes = new int[size];
 		for(int i = 0; i < size; i++) {
 			nodes[i] = h.random.nextInt(99);
+		}
+		insertNodes(nodes);
+		return;
+	}
+	
+	public void generateSampleLinkedList(int size, int maxVal) {
+		head = null;
+		int[] nodes = new int[size];
+		for(int i = 0; i < size; i++) {
+			nodes[i] = h.random.nextInt(maxVal+1);
 		}
 		insertNodes(nodes);
 		return;

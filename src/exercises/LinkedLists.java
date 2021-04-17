@@ -9,6 +9,8 @@ public class LinkedLists {
 	private int opCount = 0; //add where applicable to count operations
 	private static Helper h = new Helper();
 	private static IntLinkedList ill = new IntLinkedList();
+	private static IntLinkedList ill2 = new IntLinkedList(); //required for problem 5
+	private static IntLinkedList ill3 = new IntLinkedList(); //required for problem 5
 	
 	
 	public static void RunTests() {
@@ -17,7 +19,7 @@ public class LinkedLists {
 		
 		try {
 			
-			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes");
+			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 				
@@ -52,6 +54,21 @@ public class LinkedLists {
 					int value = Integer.parseInt(input2);
 					partition(value);
 					break;
+				case(5):
+					System.out.println("(Not yet implemented!)\nGiven two randomly-specified single-digit-valued linked lists, will compile a single number out of each of them, and then create a third summed linked list.");
+					System.out.print("Interpret values in reverse order? (true/false): ");
+					boolean invert = Main.reader.nextBoolean();
+					Main.reader.nextLine(); //eats remainder
+					ill.generateSampleLinkedList(3, 9);
+					ill2.generateSampleLinkedList(3, 9);
+					System.out.println("First linked list: " + ill.toString());
+					System.out.println("Second linked list: " + ill2.toString());
+					sumTwoLists(invert);
+					System.out.println("Result: " + ill3.toString());
+					ill.reset();
+					ill2.reset();
+					ill3.reset();
+					return;
 				default:
 					System.out.println("Function does not exist.");
 					return;
@@ -162,8 +179,20 @@ public class LinkedLists {
 		ill.head = (headLessThan == null) ? headGreaterThan : headLessThan;
 		if(currLessThan != null) currLessThan.next = headGreaterThan; //if headGreaterThan == null, this assignment will work still
 		return;
+		/* I was shocked to find that my implementation was very similar to one of the proposed solutions in the book. My solution 
+		 * runs in O(n) time, and essentially incrementally destroys the original list, while rebuilding two lists: 
+		 * one list for nodes less than the value, and one greater than or equal to - then merges them. A less clunky approach
+		 * (with the same runtime) would have been to set the original head as the "center" node, and prepend nodes less than the
+		 * value, and append those greater.*/
 	}
 	
+	/* Given two linked lists comprised of only single-digit nodes, it will compile the full number of each of them incrementally 
+	 * (ones place, tens place, hundreds place...), and then sum the overall "numerical value" of the two lists in a new list.
+	 * (example: 1 -> 6 -> 5 and 2 -> 7 -> 8 yielding 4 -> 4 -> 3). Takes from ill1/ill2, stores result in ill3. */
+	private static void sumTwoLists(boolean storedInReverseOrder) {
+		//TODO
+		return;
+	}
 	
 	//repetitive code
 	private static void getUserLinkedList() throws Exception {
