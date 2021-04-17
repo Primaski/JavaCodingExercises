@@ -12,46 +12,46 @@ public class LinkedLists {
 	
 	
 	public static void RunTests() {
-		String result= "NULL";
 		String input = "";
 		String input2 = "";
 		
 		try {
 			
-			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node");
+			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 				
 			switch(functionNo) {
 				case(1):
-					System.out.println("Removes duplicates from an unsorted linked list. Insert int values of list, separated by a space.");
-					input = Main.reader.nextLine();
-					removeDuplicates(input);
+					System.out.println("Removes duplicates from an unsorted linked list. Insert int values of list separated by a space (or type 'random').");
+					getUserLinkedList();
+					removeDuplicates();
 					break;
 				case(2):
-					System.out.println("Given a linked list, returns the kth to last element, where k is specified by the user. Please first input the int values of the list, enter, and then the desired value for k.");
+					System.out.println("Given a linked list, returns the kth to last element.");
+					getUserLinkedList();
+					System.out.print("k: ");
 					input = Main.reader.nextLine();
-					input2 = Main.reader.nextLine();
-					int k = Integer.parseInt(input2);
-					System.out.println(returnKthToLast(input, k));
+					int k = Integer.parseInt(input);
+					System.out.println(returnKthToLast(k));
 					return;
 				case(3):
 					System.out.println("Deletes a node at a randomly specified index, given ONLY access to that one particular node. No user input.");
 					ill.generateSampleLinkedList(10);
-					System.out.println("List before:\n" + ill.toString());
+					System.out.println("Before: " + ill.toString());
 					int index = h.random.nextInt(9) + 1; //can't resolve to index 0 or 9
 					Node randomNode = ill.getNodeAtIndex(index);
 					System.out.println("Deleting node at index " + index + ".");
 					deleteMiddleNode(randomNode);
-					System.out.println("List after:");
 					break;
 				case(4):
-					/*System.out.println("Given a linked list and a some value x, partitions elements whereby all nodes with values less than x appear before the rest.");
-					input = Main.reader.nextLine();
+					System.out.println("Given a user-specified linked list ('random' for random) and a some value x, partitions elements whereby all nodes with values less than x appear before the rest.");
+					getUserLinkedList();
+					System.out.print("Partition value (x): ");
 					input2 = Main.reader.nextLine();
 					int value = Integer.parseInt(input2);
-					partition(input, value);
-					break;*/
+					partition(value);
+					break;
 				default:
 					System.out.println("Function does not exist.");
 					return;
@@ -61,18 +61,15 @@ public class LinkedLists {
 			e.printStackTrace();
 			return;
 		}
-			
-		ill.print();
+		
+		System.out.println("After: " + ill.toString());
 		ill.reset();
 		return;
 	}
 
 
 	/*Removes duplicate values from linked list. REQUIREMENT: No buffer allowed.*/
-	private static void removeDuplicates(String list) throws Exception {
-		ill.insertNodesFromString(list);
-		if(ill.head.next == null) return;
-		
+	private static void removeDuplicates() throws Exception {		
 		//Given our restraint on a buffer, we will use the runner technique to tackle this somewhat iteratively.
 		Node slowNode = ill.head;
 		Node fastNode = ill.head; //fastNode will always have to evaluate the NEXT node, so as to reassign references correctly
@@ -98,8 +95,7 @@ public class LinkedLists {
 	}
 	
 	/* For a linked list where head index = 0, head.next index = 1 etc... return the kth-to-last element.*/
-	private static String returnKthToLast(String list, int k) throws Exception {
-		ill.insertNodesFromString(list);
+	private static String returnKthToLast(int k) throws Exception {
 		if(ill.head == null) return "List cannot be empty.";
 		if(k <= 0) return "K must be larger than 0";
 		
@@ -134,8 +130,47 @@ public class LinkedLists {
 	}
 	
 	/* Given some value, all elements BELOW this value will be moved before all elements ABOVE/AT this value. May not be in order.*/
-	private static void partition(String list, int value) {
-		//TODO
+	private static void partition(int value) throws Exception {
+		
+		//creating two separate sets of new nodes, combining at the end
+		Node headLessThan, headGreaterThan, currLessThan, currGreaterThan;
+		headLessThan = headGreaterThan = currLessThan = currGreaterThan = null;
+		
+		while(ill.head != null) {
+			Node nextNode = ill.head.next; //save so it can be deleted and prevents an infinite loop
+			ill.head.next = null;
+			if(ill.head.value < value) {
+				if(headLessThan == null) { 	//initial assignment, should only be run once
+					headLessThan = ill.head;
+					currLessThan = headLessThan;
+				}else {
+					currLessThan.next = ill.head;
+					currLessThan = ill.head;
+				}
+			}else{
+				if(headGreaterThan == null) { //initial assignment, should only be run once
+					headGreaterThan = ill.head;
+					currGreaterThan = headGreaterThan;
+				}else {
+					currGreaterThan.next = ill.head;
+					currGreaterThan = ill.head;
+				}
+			}
+			ill.head = nextNode;
+		}
+		
+		currLessThan.next = headGreaterThan;
+		ill.head = headLessThan;
+		return;
+	}
+	
+	
+	//repetitive code
+	private static void getUserLinkedList() throws Exception {
+		System.out.print("List ('random' for random): ");
+		String x = Main.reader.nextLine();
+		ill.insertNodesFromString(x);
+		System.out.println("Before: " + ill.toString());
 		return;
 	}
 }

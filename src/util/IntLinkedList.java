@@ -29,6 +29,10 @@ public class IntLinkedList {
 	}
 	
 	public void insertNodesFromString(String nodes) throws Exception {
+		if(nodes.toLowerCase().equals("random")) {
+			generateSampleLinkedList(10);
+			return;
+		}
 		if(nodes == null || nodes.isEmpty()) throw new Exception("List cannot be empty.");
 		
 		String[] strVals = nodes.split(" ");
