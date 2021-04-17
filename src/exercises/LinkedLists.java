@@ -159,8 +159,8 @@ public class LinkedLists {
 			ill.head = nextNode;
 		}
 		
-		currLessThan.next = headGreaterThan;
-		ill.head = headLessThan;
+		ill.head = (headLessThan == null) ? headGreaterThan : headLessThan;
+		if(currLessThan != null) currLessThan.next = headGreaterThan; //if headGreaterThan == null, this assignment will work still
 		return;
 	}
 	
