@@ -87,7 +87,8 @@ public class IntLinkedList {
 		return;
 	}
 	
-	public void generateSampleLinkedList(int size, int maxVal) {
+	public void generateSampleLinkedList(int size, int maxVal) throws Exception {
+		if(size <= 0) throw new Exception("Illegal bounds, a linked list cannot contain fewer than 1 element");
 		head = null;
 		int[] nodes = new int[size];
 		for(int i = 0; i < size; i++) {

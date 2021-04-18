@@ -55,14 +55,17 @@ public class LinkedLists {
 					partition(value);
 					break;
 				case(5):
-					System.out.println("(Not yet implemented!)\nGiven two randomly-specified single-digit-valued linked lists, will compile a single number out of each of them, and then create a third summed linked list.");
+					System.out.println("Given two randomly-specified single-digit-valued linked lists, will compile a single number out of each of them, and then create a third summed linked list.");
+					System.out.print("Length of first linked list (1+): ");
+					int length1 = Main.reader.nextInt();
+					System.out.print("Length of second linked list (1+): ");
+					int length2 = Main.reader.nextInt();
+					ill.generateSampleLinkedList(length1, 9);
+					ill2.generateSampleLinkedList(length2, 9);
 					System.out.print("Interpret values in reverse order? (true/false): ");
 					boolean invert = Main.reader.nextBoolean();
 					Main.reader.nextLine(); //eats remainder
-					ill.generateSampleLinkedList(3, 9);
-					ill2.generateSampleLinkedList(4, 9);
-					System.out.println("First linked list: " + ill.toString());
-					System.out.println("Second linked list: " + ill2.toString());
+					System.out.println("First linked list: " + ill.toString() + "\nSecond linked list: " + ill2.toString());
 					sumTwoLists(invert);
 					System.out.println("Result: " + ill3.toString());
 					ill.reset();
@@ -189,26 +192,36 @@ public class LinkedLists {
 	/* Given two linked lists comprised of only single-digit nodes, it will compile the full number of each of them incrementally 
 	 * (ones place, tens place, hundreds place...), and then sum the overall "numerical value" of the two lists in a new list.
 	 * (example: 1 -> 6 -> 5 and 2 -> 7 -> 8 yielding 4 -> 4 -> 3). Takes from ill1/ill2, stores result in ill3. */
-	private static void sumTwoLists(boolean storedInReverseOrder) {
-		getSum(ill.head, ill2.head, 0);
+	private static void sumTwoLists(boolean storedInReverseOrder) throws Exception {
+		if(ill.head == null || ill2.head == null) throw new Exception("Both lists require elements.");
+		if(storedInReverseOrder) {
+			getSum(ill.head, ill2.head, 0); //comment in getSum
+			return;
+		}
+		System.out.println("Not yet implemented!");
+		//future function
 		return;
 	}
 	
-	private static void getSum(Node l1, Node l2, int carry) {
-		if(l1 == null && l2 == null && carry == 0) return; //nothing left to do
-		int total = (l1 == null ? 0 : l1.value) + (l2 == null ? 0 : l2.value) + carry;
+	private static void getSum(Node l1, Node l2, int remainder) {
+		int total = (l1 == null ? 0 : l1.value) + (l2 == null ? 0 : l2.value) + remainder;
 		int nodeVal = total % 10;
 		int remain = total / 10;
 		
-		if(l1 == null && l2 == null && remain == 1) {
+		if(l1 == null && l2 == null) { //BASE CASE
+			if(remain == 0) return;
 			ill3.prependNode(remain);
-		}else {
-			l1 = (l1 == null ? null : l1.next);
-			l2 = (l2 == null ? null : l2.next);
-			getSum(l1, l2, remain);
-			ill3.prependNode(nodeVal);
+			return;
 		}
+		
+		l1 = (l1 == null ? null : l1.next);
+		l2 = (l2 == null ? null : l2.next);
+		getSum(l1, l2, remain);
+		ill3.prependNode(nodeVal);
 		return;
+		/* This function required heavy thought over a long period of time. It's not how I'm normally used to implementing recursive
+		 * functions, since the base case occurs in the middle, and the quirk of the remainder being passed forward through arguments instead of
+		 * backward through a return value. This runs very similar to the proposed solution, though is written very differently. */
 	}	
 	
 	//repetitive code
