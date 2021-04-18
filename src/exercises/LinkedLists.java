@@ -60,7 +60,7 @@ public class LinkedLists {
 					boolean invert = Main.reader.nextBoolean();
 					Main.reader.nextLine(); //eats remainder
 					ill.generateSampleLinkedList(3, 9);
-					ill2.generateSampleLinkedList(3, 9);
+					ill2.generateSampleLinkedList(4, 9);
 					System.out.println("First linked list: " + ill.toString());
 					System.out.println("Second linked list: " + ill2.toString());
 					sumTwoLists(invert);
@@ -190,9 +190,26 @@ public class LinkedLists {
 	 * (ones place, tens place, hundreds place...), and then sum the overall "numerical value" of the two lists in a new list.
 	 * (example: 1 -> 6 -> 5 and 2 -> 7 -> 8 yielding 4 -> 4 -> 3). Takes from ill1/ill2, stores result in ill3. */
 	private static void sumTwoLists(boolean storedInReverseOrder) {
-		//TODO
+		getSum(ill.head, ill2.head, 0);
 		return;
 	}
+	
+	private static void getSum(Node l1, Node l2, int carry) {
+		if(l1 == null && l2 == null && carry == 0) return; //nothing left to do
+		int total = (l1 == null ? 0 : l1.value) + (l2 == null ? 0 : l2.value) + carry;
+		int nodeVal = total % 10;
+		int remain = total / 10;
+		
+		if(l1 == null && l2 == null && remain == 1) {
+			ill3.prependNode(remain);
+		}else {
+			l1 = (l1 == null ? null : l1.next);
+			l2 = (l2 == null ? null : l2.next);
+			getSum(l1, l2, remain);
+			ill3.prependNode(nodeVal);
+		}
+		return;
+	}	
 	
 	//repetitive code
 	private static void getUserLinkedList() throws Exception {

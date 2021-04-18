@@ -7,9 +7,14 @@ public class IntLinkedList {
 	Helper h = new Helper();
 	
 	public void appendNode(int val) {
-		Node newNode = new Node(val);
-		Node curr = head;
 		
+		Node newNode = new Node(val);
+		if(head == null) {
+			head = newNode;
+			return;
+		}
+		
+		Node curr = head;
 		while(curr.next != null) {
 			curr = curr.next;
 		}
