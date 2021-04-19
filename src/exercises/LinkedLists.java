@@ -198,7 +198,10 @@ public class LinkedLists {
 			getSum(ill.head, ill2.head, 0); //comment in getSum
 			return;
 		}
+		
 		System.out.println("Not yet implemented!");
+		
+		
 		//future function
 		return;
 	}

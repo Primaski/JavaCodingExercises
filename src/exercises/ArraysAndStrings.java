@@ -178,7 +178,7 @@ public class ArraysAndStrings{
 		}
 		return true;
 		/* Runtime of my algorithm is O(n), as it only traverses the string once, regardless of case.
-		 * My solution was very similar to the first proposed ideal solution, and both had equal runtimes, just 
+		 * My solution was very similar to the first proposed ideal solution, and both had equal run times, just 
 		 * different methods of structuring.
 		 * */
 	}
