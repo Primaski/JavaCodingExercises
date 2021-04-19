@@ -195,7 +195,7 @@ public class ArraysAndStrings{
 				if(small.charAt(smallIndex) != big.charAt(bigIndex+1)) {
 					return false; //couldn't have been a single insertion
 				}else {
-					bigIndex++; //make this new permanent index going forward
+					bigIndex++; //make this new permanent index going forward.
 					shiftFound = true;
 				}
 			}
