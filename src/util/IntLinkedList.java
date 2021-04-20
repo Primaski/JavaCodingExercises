@@ -77,6 +77,17 @@ public class IntLinkedList {
 		return;
 	}
 	
+	public int length() {
+		if(head == null) return 0;
+		Node temp = head;
+		int length = 0;
+		while(temp != null) {
+			length++;
+			temp = temp.next;
+		}
+		return length;
+	}
+	
 	public void generateSampleLinkedList(int size) {
 		head = null;
 		int[] nodes = new int[size];

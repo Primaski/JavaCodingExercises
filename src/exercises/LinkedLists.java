@@ -19,7 +19,7 @@ public class LinkedLists {
 		
 		try {
 			
-			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists");
+			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists\n(6)Is Palindrome");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 				
@@ -71,6 +71,12 @@ public class LinkedLists {
 					ill.reset();
 					ill2.reset();
 					ill3.reset();
+					return;
+				case(6):
+					System.out.println("Given a linked list, determines whether it is a palindrome.");
+					getUserLinkedList();
+					ill.print();
+					System.out.println(Boolean.toString(isPalindrome(ill.head)));
 					return;
 				default:
 					System.out.println("Function does not exist.");
@@ -195,18 +201,21 @@ public class LinkedLists {
 	private static void sumTwoLists(boolean storedInReverseOrder) throws Exception {
 		if(ill.head == null || ill2.head == null) throw new Exception("Both lists require elements.");
 		if(storedInReverseOrder) {
-			getSum(ill.head, ill2.head, 0); //comment in getSum
+			getSumBackwards(ill.head, ill2.head, 0); //comment in getSumBackwards
 			return;
 		}
 		
-		System.out.println("Not yet implemented!");
-		
-		
-		//future function
+		if(ill.length() > ill2.length()) {
+			ill2.head = h.padZerosLeft(ill2.head, ill.length()-ill2.length());
+		}else if(ill2.length() > ill.length()) {
+			ill.head = h.padZerosLeft(ill.head, ill2.length()-ill.length());
+		}
+		int lastDigitRemainder = getSumForwards(ill.head, ill2.head); //comment in getSumForwards
+		if(lastDigitRemainder != 0) ill3.prependNode(lastDigitRemainder);
 		return;
 	}
 	
-	private static void getSum(Node l1, Node l2, int remainder) {
+	private static void getSumBackwards(Node l1, Node l2, int remainder) {
 		int total = (l1 == null ? 0 : l1.value) + (l2 == null ? 0 : l2.value) + remainder;
 		int nodeVal = total % 10;
 		int remain = total / 10;
@@ -219,13 +228,34 @@ public class LinkedLists {
 		
 		l1 = (l1 == null ? null : l1.next);
 		l2 = (l2 == null ? null : l2.next);
-		getSum(l1, l2, remain);
+		getSumBackwards(l1, l2, remain);
 		ill3.prependNode(nodeVal);
 		return;
 		/* This function required heavy thought over a long period of time. It's not how I'm normally used to implementing recursive
 		 * functions, since the base case occurs in the middle, and the quirk of the remainder being passed forward through arguments instead of
-		 * backward through a return value. This runs very similar to the proposed solution, though is written very differently. */
+		 * backward through a return value. This runs very similar to the proposed solution, though is written very differently. 
+		 * Runs in O(max(length(l1),length(l2)) time. */
 	}	
+	
+	private static int getSumForwards(Node l1, Node l2) {
+		//these two cases should happen at same time due to padding
+		int remainder = 0;
+		if(l1.next != null || l2.next != null) remainder = getSumForwards(l1.next, l2.next); //get as deep as possible
+		int total = l1.value + l2.value + remainder;		
+		int nodeVal = total % 10;
+		int remain = total / 10;
+		ill3.prependNode(nodeVal);
+		return remain;
+		/* This function was much simpler once the general idea was down. The idea was to recurse to the end of the list and use
+		 * return values to carry remainders - all the while, adding to the result list. The code for this section was significantly shorter
+		 * than the book's, however, that also lies in part due to my implementation, where the result list in stored in another class.
+		 * There were a few implementation differences, but the padding zero idea remained the same. Runs in O(max(length(l1),length(l2))) time. */
+	}
+	
+	/* Given a linked list, determines whether the list is a palindrome. */
+	private static boolean isPalindrome(Node list) {
+		return false;
+	}
 	
 	//repetitive code
 	private static void getUserLinkedList() throws Exception {
