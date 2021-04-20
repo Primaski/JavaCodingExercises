@@ -2,12 +2,16 @@ package exercises;
 
 import util.Helper;
 import util.IntLinkedList;
+import util.LinkedListUtil;
 import util.Node;
 
 public class LinkedLists {
 	
 	private int opCount = 0; //add where applicable to count operations
+	
 	private static Helper h = new Helper();
+	private static LinkedListUtil hh = new LinkedListUtil();
+	
 	private static IntLinkedList ill = new IntLinkedList();
 	private static IntLinkedList ill2 = new IntLinkedList(); //required for problem 5
 	private static IntLinkedList ill3 = new IntLinkedList(); //required for problem 5
@@ -19,7 +23,8 @@ public class LinkedLists {
 		
 		try {
 			
-			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists\n(6)Is Palindrome");
+			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists\n(6)Is Palindrome\n"
+					+ "(7)Do Lists Intersect\n(8)List loop detection");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 				
@@ -80,9 +85,34 @@ public class LinkedLists {
 					ill.reset();
 					return;
 				case(7):
-					System.out.println("Given two linked lists, tell if any of their nodes intersect by REFERENCE.");
-					System.out.println("Not yet implemented");
-					break;
+					System.out.println("Given two linked lists, tell if any of their nodes intersect by REFERENCE. No user input.");
+					int list1Length = h.random.nextInt(10)+1;
+					int list2Length = h.random.nextInt(10)+1;
+					ill.generateSampleLinkedList(list1Length);
+					ill2.generateSampleLinkedList(list2Length);
+					if(h.random.nextBoolean()) {
+						hh.intersectListsAtRandomPoint(ill.head, ill2.head, list1Length, list2Length);
+					}
+					ill.print();
+					ill2.print();
+					Node w = findIntersectingNode(ill.head, ill2.head);
+					System.out.println((w == null) ? "These lists do not intersect." : "These lists intersect at the value " + w.value + ".");
+					ill.reset();
+					ill2.reset();
+					return;
+				case(8):
+					System.out.println("Determines if list has a loop, and if so, returns the Node that starts the loop. No user input, list is random.");
+					int sizeOfList = h.random.nextInt(10) + 1;
+					ill.generateSampleLinkedList(sizeOfList);
+					Node list = ill.head;
+					if(h.random.nextBoolean()) {
+						list = hh.createRandomLoop(list);
+					}
+					hh.printFirstNValues(list, sizeOfList+10);
+					Node n = determineLoopNode(list);
+					System.out.println((n == null) ? "\nThe list contains no loop." : "\nThe loop began at the node with the value " + n.value +". (discovered with a hash table)");
+					ill.reset();
+					return;
 				default:
 					System.out.println("Function does not exist.");
 					return;
@@ -211,9 +241,9 @@ public class LinkedLists {
 		}
 		
 		if(ill.length() > ill2.length()) {
-			ill2.head = h.padZerosLeft(ill2.head, ill.length()-ill2.length());
+			ill2.head = hh.padZerosLeft(ill2.head, ill.length()-ill2.length());
 		}else if(ill2.length() > ill.length()) {
-			ill.head = h.padZerosLeft(ill.head, ill2.length()-ill.length());
+			ill.head = hh.padZerosLeft(ill.head, ill2.length()-ill.length());
 		}
 		int lastDigitRemainder = getSumForwards(ill.head, ill2.head); //comment in getSumForwards
 		if(lastDigitRemainder != 0) ill3.prependNode(lastDigitRemainder);
@@ -283,10 +313,52 @@ public class LinkedLists {
 	}
 	
 	/* Determines whether two lists intersect at any node by REFERENCE. */
-	private static boolean doListsIntersect(Node list1, Node list2) {
-		return false;
+	private static Node findIntersectingNode(Node list1, Node list2) {
+		/* Since the end of two intersecting linked lists must be the same, intersection must occur k nodes from
+		 * the end of both of them. Given this, we should catch the longer list up to the shorter one, so that 
+		 * they both will start marching from the same distance from the end.*/
+		if(list1 == null || list2 == null) return null;
+		int list1Length = hh.getLength(list1);
+		int list2Length = hh.getLength(list2);
+		if(list1Length > list2Length) {
+			list1 = hh.goToIndex(list1, list1Length - list2Length);
+		}else if(list2Length > list1Length) {
+			list2 = hh.goToIndex(list2, list2Length - list1Length);
+		}
+		
+		while(list1 != null) { //both lists are now same distance from the end
+			if(list1 == list2) {
+				return list1;
+			}
+			list1 = list1.next;
+			list2 = list2.next;
+		}
+		return null;
+		/* This problem was very challenging for me. At first, I considered traversing both of the lists backwards (through recursion) and find the point
+		 * of divergence. This didn't work, as lists of different lengths would be comparing nodes at different lengths from the end (and traveling backwards without
+		 * recursion on a singly-linked list is pretty impossible). At that point, I realized we needed to have both lists at a constant length from the end, and once I 
+		 * realized that, I stopped trying to implement it recursively. Space complexity is O(1), and runs in O(M+N) time (whereby M = list1.length and N = list2.length), 
+		 * since we need to traverse both lists entirely once to find the lengths, and in a worst case we need to traverse the shortest list once more until the end of the 
+		 * list. Book solution has virtually the same implementation, just checks the final node during length check instead.*/
 	}
-
+	
+	/*If a loop exists in a list, determines the Node it occurs at.*/
+	private static Node determineLoopNode(Node list) {
+		hh.createHashTable(100);
+		boolean foundDuplicate = false;
+		while(list != null) {
+			if(hh.nodeExistsInHashTable(list)) {
+				return list;
+			}
+			hh.insertInHashTable(list);
+			list = list.next;
+		}
+		return null;
+		/* My method of implementation is very efficient, it takes O(N) time, and simply stores the address of each node in a hash table. If an address appears
+		 * more than once, it obviously begins a loop, since, if two nodes share the same address, they also share the same pointer to the next address.
+		 * This required the implementation of an entire hash table, however, so despite this code being short and efficient, it's a bit of an overhead.
+		 * */
+	}
 	
 	/************************/
 	//repetitive code
@@ -297,4 +369,17 @@ public class LinkedLists {
 		System.out.println("Before: " + ill.toString());
 		return;
 	}
+	
+	private static class IntersectingNodeHelper{
+		/* Needed since the recursive function needs to know whether NULL indicates an impossible intersection, 
+		 * or an intersection that hasn't been found yet*/
+		public boolean intersects = true;
+		public Node intersectsAt = null;
+		public IntersectingNodeHelper(boolean intersects, Node intersectsAt) {
+			this.intersects = intersects;
+			this.intersectsAt = intersectsAt;
+		}
+	}
 }
+	
+

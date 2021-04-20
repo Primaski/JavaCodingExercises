@@ -110,16 +110,4 @@ public class Helper{
 		return Arrays.deepToString(matrix).replace("], ", "]\n");
 	}
 	
-	public Node padZerosLeft(Node linkedList, int numberOfZeros) {
-		if(numberOfZeros < 1) return linkedList;
-		Node newListHead = new Node(0);
-		Node newList = newListHead;
-		numberOfZeros--;
-		for(int i = numberOfZeros; i > 0; i--) {
-			newList.next = new Node(0);
-			newList = newList.next;
-		}
-		newList.next = linkedList;
-		return newListHead;
-	}
 }
