@@ -77,7 +77,12 @@ public class LinkedLists {
 					getUserLinkedList();
 					ill.print();
 					System.out.println(Boolean.toString(isPalindrome(ill.head)));
+					ill.reset();
 					return;
+				case(7):
+					System.out.println("Given two linked lists, tell if any of their nodes intersect by REFERENCE.");
+					System.out.println("Not yet implemented");
+					break;
 				default:
 					System.out.println("Function does not exist.");
 					return;
@@ -254,9 +259,36 @@ public class LinkedLists {
 	
 	/* Given a linked list, determines whether the list is a palindrome. */
 	private static boolean isPalindrome(Node list) {
+		if(list == null || list.next == null) return true;
+		if(isPalindromeHelper(list, list) != null) return true;
 		return false;
+		/* My code ended up vastly different from any solutions in the book. The only recursive solution in the book utilized a stack operating 
+		 * on the second half of the list. Both pieces of code have a runtime of O(n) and require an external data structure, but I feel as if
+		 * my recursive implementation is cleaner and shorter, plus makes clever use of the fact of using NULL data to double as a boolean. */
 	}
 	
+	private static Node isPalindromeHelper(Node list, Node queue) {
+		/*RETURNING NULL SIGNALS THAT THE STRING IS NOT A PALINDROME*/
+		Node nextInQueue = queue;
+		if(list.next != null) {
+			nextInQueue = isPalindromeHelper(list.next, queue);
+			if(nextInQueue == null) return null; //was not successful
+		}
+		
+		if(list.value == nextInQueue.value) {
+			//if it's null, we've reached the end successfully. send back a non-null node to report the good news.
+			return (nextInQueue.next == null) ? new Node(1) : nextInQueue.next;
+		}
+		return null; //null works as a boolean to inform that it is not a palindrome
+	}
+	
+	/* Determines whether two lists intersect at any node by REFERENCE. */
+	private static boolean doListsIntersect(Node list1, Node list2) {
+		return false;
+	}
+
+	
+	/************************/
 	//repetitive code
 	private static void getUserLinkedList() throws Exception {
 		System.out.print("List ('random' for random): ");
