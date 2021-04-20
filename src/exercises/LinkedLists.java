@@ -22,9 +22,8 @@ public class LinkedLists {
 		String input2 = "";
 		
 		try {
-			
 			System.out.println("Run which code?\n(1)Remove Duplicates\n(2)Return Kth to Last Element\n(3)Delete middle node\n(4)Partition nodes\n(5)Sum two lists\n(6)Is Palindrome\n"
-					+ "(7)Do Lists Intersect\n(8)List loop detection");
+					           + "(7)Do Lists Intersect\n(8)List loop detection");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 				
@@ -357,7 +356,8 @@ public class LinkedLists {
 		/* My method of implementation is very efficient, it takes O(N) time, and simply stores the address of each node in a hash table. If an address appears
 		 * more than once, it obviously begins a loop, since, if two nodes share the same address, they also share the same pointer to the next address.
 		 * This required the implementation of an entire hash table, however, so despite this code being short and efficient, it's a bit of an overhead.
-		 * */
+		 * The book's solution did not utilize a hash table, but rather, a slow and fast node pointer. Their method takes up less space complexity and
+		 * overhead, but the number of nodes to traverse through will likely be higher, and the code is less straight-forward.*/
 	}
 	
 	/************************/

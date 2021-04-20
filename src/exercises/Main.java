@@ -8,7 +8,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		while(true) {
-			System.out.println("Which set of exercises?\n(1)Arrays and Strings\n(2)Linked Lists");
+			System.out.println("Which set of exercises?\n(1)Arrays and Strings\n(2)Linked Lists\n"
+					+ "(3)Stacks And Queues");
 			int category = reader.nextInt();
 			reader.nextLine(); //consume \n
 		
@@ -19,6 +20,10 @@ public class Main {
 					break;
 				case(2):
 					exercises.LinkedLists.RunTests();
+					reader.nextLine();
+					break;
+				case(3):
+					exercises.StacksAndQueues.RunTests();
 					reader.nextLine();
 					break;
 				default:
