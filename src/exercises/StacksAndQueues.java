@@ -12,12 +12,13 @@ public class StacksAndQueues {
 		String input2 = "";
 		
 		try {
-			System.out.println("Run which code?\n");
+			System.out.println("Run which code?\n(1)Three Stacks in One Array (text only)\n");
 			int functionNo = Main.reader.nextInt();
 			Main.reader.nextLine(); //consume \n
 			switch(functionNo) {
 				case(1):
-					break;
+					threeStacksOneArray();
+					return;
 				default:
 					break;
 			}
@@ -26,5 +27,10 @@ public class StacksAndQueues {
 		}
 		System.out.println("Not yet implemented.");
 		return;
+	}
+
+	private static void threeStacksOneArray() {
+		System.out.println("The question asks how you might go about implementing three stacks in a single array.\n"
+				+ "Obviously, it would be very inefficient to partition the array, since ");
 	}
 }
