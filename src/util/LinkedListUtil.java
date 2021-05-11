@@ -6,7 +6,7 @@ import exercises.Main;
 
 public class LinkedListUtil {
 	
-	/*Extension of Helper, but specific to Linked Lists. Separating because most classes don't need Linked List utility.*/
+	/*Extension of Helper, but specific to Linked Lists. Separating because most classes don't need Linked List utility..*/
 	
 	Helper h = new Helper();
 	
