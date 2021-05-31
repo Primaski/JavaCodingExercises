@@ -31,6 +31,6 @@ public class StacksAndQueues {
 
 	private static void threeStacksOneArray() {
 		System.out.println("The question asks how you might go about implementing three stacks in a single array.\n"
-				+ "Obviously, it would be very inefficient to partition the array, since ");
+				+ "Obviously, it would be very inefficient to partition the array, since");
 	}
 }
