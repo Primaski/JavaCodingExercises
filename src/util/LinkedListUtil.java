@@ -25,7 +25,7 @@ public class LinkedListUtil {
 		return newListHead;
 	}
 
-	/* Connects list to list2 at a random point in list2 (some values at the end of list1 may be lost forever). Assumes the heads of these nodes are stored in an external class.*/
+	/* Connects list to list2 at a random point in  list2 (some values at the end of list1 may be lost forever). Assumes the heads of these nodes are stored in an external class.*/
 	public void intersectListsAtRandomPoint(Node list1, Node list2, int list1Length, int list2Length) {
 		if(list1 == null || list2 == null) return;
 		int list1PointOfIntersection = h.random.nextInt(list1Length);
